@@ -7,6 +7,8 @@ SRC=$(date '+%d%m%Y%H%M%S').sql.gz
 # BACKUP
 ##########################################################
 rm -f /dump.sql || true
+echo "$POSTGRES_HOST:$POSTGRES_PORT:$POSTGRES_DATABASE:$POSTGRES_USER:$POSTGRES_PASSWORD" > /root/.pgpass
+chmod 0600 /root/.pgpass
 pg_dump --create --file=/dump.sql --format=c --dbname="$POSTGRES_DATABASE" --username="$POSTGRES_USER" --host="$POSTGRES_HOST" --port="$POSTGRES_PORT" -v
 
 # GZIP
