@@ -42,7 +42,9 @@ if [ "${LOKI_URL}" = "**None**" ]; then
   echo "INFO: Define LOKI_URL to monitor sync job"
 else
   echo "Curl check url and app: ${LOKI_URL} ${LOKI_APP}"
-  DATA="{\"streams\": [{\"stream\": {\"app\": \"${LOKI_APP}\"},\"values\": [[$(date +%s%N), 1 ]]}]}"
+  DT=$(date +%s%N)
+  DATA="{\"streams\": [{\"stream\": {\"app\": \"${LOKI_APP}\"},\"values\": [[${DT}, 1 ]]}]}"
+  echo "JSON: $DATA"
   curl -v -H "Content-Type: application/json" -XPOST -s "$LOKI_URL" --data-raw "$DATA"
 fi
 
