@@ -1,4 +1,4 @@
-FROM postgres:10-alpine
+FROM postgres:13-alpine
 
 ENV POSTGRES_DATABASE **None**
 ENV POSTGRES_HOST **None**
@@ -7,6 +7,8 @@ ENV POSTGRES_USER **None**
 ENV POSTGRES_PASSWORD **None**
 ENV RCLONE_DEST **None**
 ENV CHECK_URL **None**
+ENV LOKI_URL **None**
+ENV LOKI_APP **None**
 
 RUN apk update && apk add curl
 ADD run.sh /run.sh
