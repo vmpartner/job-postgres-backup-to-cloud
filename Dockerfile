@@ -1,4 +1,4 @@
-FROM postgres:13-alpine
+FROM postgres:10-alpine
 
 ENV POSTGRES_DATABASE **None**
 ENV POSTGRES_HOST **None**
