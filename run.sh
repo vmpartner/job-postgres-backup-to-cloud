@@ -45,6 +45,6 @@ else
   DT=$(date +%s%N)
   DATA="{\"streams\": [{\"stream\": {\"app\": \"${LOKI_APP}\"},\"values\": [[${DT}, 1 ]]}]}"
   echo "JSON: $DATA"
-  curl -v -H "Content-Type: application/json" -XPOST -s "$LOKI_URL" --data-raw "$DATA"
+  curl -v -H "Content-Type: application/json" -XPOST -s "$LOKI_URL" --data-raw "$DATA" || true
 fi
 

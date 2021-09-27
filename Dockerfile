@@ -10,7 +10,7 @@ ENV CHECK_URL **None**
 ENV LOKI_URL **None**
 ENV LOKI_APP **None**
 
-RUN apk update && apk add curl
+RUN apk update && apk add curl coreutils
 ADD run.sh /run.sh
 RUN chmod +x /run.sh
 RUN curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip && \
