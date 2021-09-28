@@ -1,1 +1,1 @@
-docker build -t vmpartner/job-postgres-backup-to-cloud:10-v1.1.3 . && docker push vmpartner/job-postgres-backup-to-cloud:10-v1.1.3
+docker build -t vmpartner/job-postgres-backup-to-cloud:9-v1.1.3 . && docker push vmpartner/job-postgres-backup-to-cloud:9-v1.1.3
