@@ -2,7 +2,7 @@
 
 set -e
 
-SRC=$(date '+%d%m%Y%H%M%S').sql.gz
+TRG=$(date '+%d%m%Y%H%M%S').sql
 
 # BACKUP
 ##########################################################
@@ -13,8 +13,8 @@ pg_dump --create --file=/backup/dump.sql --format=c --dbname="$POSTGRES_DATABASE
 
 # STAT
 ##########################################################
-FILESIZE=$(stat -c%s /backup/${SRC})
-echo "Size of ${SRC} = $FILESIZE bytes."
+FILESIZE=$(stat -c%s /backup/dump.sql)
+echo "Size of dump.sql = $FILESIZE bytes."
 
 # COPY
 ##########################################################
@@ -22,8 +22,8 @@ if [ "${RCLONE_DEST}" = "**None**" ]; then
   echo "INFO: Define RCLONE_DEST for upload backup to remote server"
 else
   echo "Start $(date '+%d-%m-%Y %H:%M:%S')"
-  rclone copy /backup/${SRC} "$RCLONE_DEST"
-  rm -f /backup/${SRC}
+  rclone copy /backup/dump.sql "$RCLONE_DEST/${TRG}"
+  rm -f /backup/dump.sql
   echo "Finish $(date '+%d-%m-%Y %H:%M:%S')"
 fi
 
