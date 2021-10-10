@@ -4,17 +4,22 @@ set -e
 
 TRG=$(date '+%d%m%Y%H%M%S').sql
 
+cleanup() {
+  echo "removing /backup/${TRG}"
+  rm -f /backup/${TRG}
+}
+trap cleanup EXIT
+
 # BACKUP
 ##########################################################
-rm -f /backup/dump.sql || true
+rm -f /backup/${TRG} || true
 echo "$POSTGRES_HOST:$POSTGRES_PORT:$POSTGRES_DATABASE:$POSTGRES_USER:$POSTGRES_PASSWORD" > /root/.pgpass
 chmod 0600 /root/.pgpass
-pg_dump --create --file=/backup/dump.sql --format=c --dbname="$POSTGRES_DATABASE" --username="$POSTGRES_USER" --host="$POSTGRES_HOST" --port="$POSTGRES_PORT" -v
+pg_dump --create --file=/backup/${TRG} --format=c --dbname="$POSTGRES_DATABASE" --username="$POSTGRES_USER" --host="$POSTGRES_HOST" --port="$POSTGRES_PORT" -v
 
 # STAT
 ##########################################################
-FILESIZE=$(stat -c%s /backup/dump.sql)
-echo "Size of dump.sql = $FILESIZE bytes."
+ls -alh /backup/
 
 # COPY
 ##########################################################
@@ -22,8 +27,7 @@ if [ "${RCLONE_DEST}" = "**None**" ]; then
   echo "INFO: Define RCLONE_DEST for upload backup to remote server"
 else
   echo "Start $(date '+%d-%m-%Y %H:%M:%S')"
-  rclone copy /backup/dump.sql "$RCLONE_DEST/${TRG}"
-  rm -f /backup/dump.sql
+  rclone copy /backup/${TRG} "$RCLONE_DEST"
   echo "Finish $(date '+%d-%m-%Y %H:%M:%S')"
 fi
 
