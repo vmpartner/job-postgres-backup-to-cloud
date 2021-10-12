@@ -2,20 +2,21 @@
 
 set -e
 
-TRG=$(date '+%d%m%Y%H%M%S').sql
+DT=$(date '+%d%m%Y%H%M%S')
+FILENAME=/backup/${DT}.sql
 
 cleanup() {
-  echo "removing /backup/${TRG}"
-  rm -f /backup/${TRG}
+  echo "removing ${FILENAME}"
+  rm -f ${FILENAME}
 }
 trap cleanup EXIT
 
 # BACKUP
 ##########################################################
-rm -f /backup/${TRG} || true
+rm -f ${FILENAME} || true
 echo "$POSTGRES_HOST:$POSTGRES_PORT:$POSTGRES_DATABASE:$POSTGRES_USER:$POSTGRES_PASSWORD" > /root/.pgpass
 chmod 0600 /root/.pgpass
-pg_dump --create --file=/backup/${TRG} --format=c --dbname="$POSTGRES_DATABASE" --username="$POSTGRES_USER" --host="$POSTGRES_HOST" --port="$POSTGRES_PORT" -v
+pg_dump --create --file=${FILENAME} --format=c --dbname="$POSTGRES_DATABASE" --username="$POSTGRES_USER" --host="$POSTGRES_HOST" --port="$POSTGRES_PORT" -v
 
 # STAT
 ##########################################################
@@ -23,13 +24,18 @@ ls -alh /backup/
 
 # COPY
 ##########################################################
-if [ "${RCLONE_DEST}" = "**None**" ]; then
-  echo "INFO: Define RCLONE_DEST for upload backup to remote server"
+echo "Start copy to remote server $(date '+%d-%m-%Y %H:%M:%S')"
+if [ -n "$(find "${FILENAME}" -prune -size +2147483648c)" ]; then
+  echo "Split big file"
+  split -b 1G ${FILENAME} /backup/dump_${DT}.
+  ls -alh /backup/
+  echo "Copy to remote server"
+  rclone copy -v /backup/ --include "dump_${DT}*" ${RCLONE_DEST}
+  rm -rf /backup/dump_*
 else
-  echo "Start $(date '+%d-%m-%Y %H:%M:%S')"
-  rclone copy /backup/${TRG} "$RCLONE_DEST"
-  echo "Finish $(date '+%d-%m-%Y %H:%M:%S')"
+  rclone copy -v ${FILENAME} ${RCLONE_DEST}
 fi
+echo "Finish $(date '+%d-%m-%Y %H:%M:%S')"
 
 # CHECK
 ##########################################################
@@ -51,4 +57,3 @@ else
   echo "JSON: $DATA"
   curl -v -H "Content-Type: application/json" -XPOST -s "$LOKI_URL" --data-raw "$DATA" || true
 fi
-
