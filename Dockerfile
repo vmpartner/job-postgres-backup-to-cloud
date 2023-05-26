@@ -1,4 +1,4 @@
-FROM postgres:11-alpine
+FROM postgres:15-alpine
 
 ENV POSTGRES_DATABASE **None**
 ENV POSTGRES_HOST **None**
@@ -7,8 +7,10 @@ ENV POSTGRES_USER **None**
 ENV POSTGRES_PASSWORD **None**
 ENV RCLONE_DEST **None**
 ENV CHECK_URL **None**
+ENV LOKI_APP=**None**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             0B        buildkit.dockerfile.v0
+ENV LOKI_URL=**None**
 
-RUN apk update && apk add curl
+RUN apk update && apk add curl coreutils
 ADD run.sh /run.sh
 RUN chmod +x /run.sh
 RUN curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip && \
