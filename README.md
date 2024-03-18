@@ -25,7 +25,7 @@ spec:
             node: tm-node-3
           containers:
             - name: backup-db
-              image: vmpartner/job-postgres-backup-to-cloud:16-v1.3.0
+              image: vmpartner/job-postgres-backup-to-cloud:16-v1.3.2
               resources:
                 limits:
                   cpu: 250m
@@ -83,7 +83,7 @@ version: '3.7'
 
 services:
   backup-db:
-    image: vmpartner/job-postgres-backup-to-cloud:16-v1.3.0
+    image: vmpartner/job-postgres-backup-to-cloud:16-v1.3.2
     environment:
       TZ: "Europe/Moscow"
       POSTGRES_DATABASE: "myspace"
