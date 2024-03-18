@@ -38,6 +38,14 @@ else
 fi
 echo "Finish $(date '+%d-%m-%Y %H:%M:%S')"
 
+# VACUM
+if [ "${VACUM}" = "**None**" ]; then
+  echo "INFO: Define VACUM to make vacum after backup"
+else
+  echo "Starting VACUUM FULL ANALYZE VERBOSE on database '$POSTGRES_DATABASE'..."
+  PGPASSWORD=$POSTGRES_PASSWORD vacuumdb --host="$POSTGRES_HOST" --port="$POSTGRES_PORT" --username="$POSTGRES_USER" --dbname="$POSTGRES_DATABASE" --full --analyze --verbose
+fi
+
 # CHECK
 ##########################################################
 if [ "${CHECK_URL}" = "**None**" ]; then
