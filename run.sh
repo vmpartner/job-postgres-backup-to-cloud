@@ -43,6 +43,7 @@ if [ "${VACUM}" = "**None**" ]; then
   echo "INFO: Define VACUM to make vacum after backup"
 else
   echo "Starting VACUUM FULL ANALYZE VERBOSE on database '$POSTGRES_DATABASE'..."
+  export PGOPTIONS='--statement-timeout=0'
   PGPASSWORD=$POSTGRES_PASSWORD vacuumdb --host="$POSTGRES_HOST" --port="$POSTGRES_PORT" --username="$POSTGRES_USER" --dbname="$POSTGRES_DATABASE" --full --analyze --verbose
 fi
 
