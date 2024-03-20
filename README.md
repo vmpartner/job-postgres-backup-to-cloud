@@ -130,3 +130,8 @@ pg_restore --clean --dbname="my_db" --username="my_user" --no-owner --no-acl -v 
 ```bash
 docker build -t vmpartner/job-postgres-backup-to-cloud:15-v1.2.6 . && docker push vmpartner/job-postgres-backup-to-cloud:15-v1.2.6
 ```
+
+## Contributing
+Use branch for postgres version, for example postgres-15 is v15 branch.   
+Latest version is also master branch.
+```
