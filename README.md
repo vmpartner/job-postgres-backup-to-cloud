@@ -60,11 +60,7 @@ spec:
                   value: "public"
                 - name: RCLONE_DEST
                   value: "selectel:my/path/to/backup"
-                - name: LOKI_URL
-                  value: "http://10.90.100.31:32100/loki/api/v1/push"
-                - name: LOKI_APP
-                  value: "myspace.backup"
-                - name: VACUM
+                - name: VACUM # if you need make vaccum full analyze verboze
                   value: "true"
               volumeMounts:
                 - mountPath: /etc/localtime
