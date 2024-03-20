@@ -80,6 +80,8 @@ version: '3.7'
 services:
   backup-db:
     image: vmpartner/job-postgres-backup-to-cloud:16-v1.3.2
+    profiles:
+      - backup
     environment:
       TZ: "Europe/Moscow"
       POSTGRES_DATABASE: "myspace"
@@ -102,7 +104,7 @@ services:
 
 ## Add to cron
 ```bash
-0 22 * * * /usr/local/bin/docker-compose -f /path/to/docker-compose.yml up backup-db
+0 3 * * * /usr/local/bin/docker-compose -f /path/to/your/docker-compose.yml up --profile backup backup-db
 ```
 
 ## Restore
