@@ -98,22 +98,10 @@ services:
       RCLONE_CONFIG_SELECTEL_AUTH: "https://auth.selcdn.ru/v1.0"
       RCLONE_CONFIG_SELECTEL_ENDPOINT_TYPE: "public"
       RCLONE_DEST: "selectel:my/path/to/backup"
-      LOKI_URL: "http://10.90.100.31:32100/loki/api/v1/push"
-      LOKI_APP: "myspace.backup"
       VACUM: "true"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 4096M
-        reservations:
-          cpus: '0.1'
-          memory: 64M
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true" # If using Watchtower for updates
-    restart: "no" # Equivalent to restartPolicy: Never in Kubernetes
+    restart: "no"
 ```
 
 ## Add to cron
@@ -128,7 +116,7 @@ pg_restore --clean --dbname="my_db" --username="my_user" --no-owner --no-acl -v 
 
 ## Build
 ```bash
-docker build -t vmpartner/job-postgres-backup-to-cloud:15-v1.2.6 . && docker push vmpartner/job-postgres-backup-to-cloud:15-v1.2.6
+docker build -t vmpartner/job-postgres-backup-to-cloud:16-v1.3.2 . && docker push vmpartner/job-postgres-backup-to-cloud:16-v1.3.2
 ```
 
 ## Contributing
